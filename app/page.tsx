@@ -181,17 +181,17 @@ const AISchedulingPlatform: React.FC = () => {
   const { days, hours } = generateWeekView();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Header */}
       <header className="border-b border-slate-700/50 bg-slate-900/50 backdrop-blur-xl">
         <div className="max-w-[1800px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-linear-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   AI Scheduler
                 </h1>
                 <p className="text-xs text-slate-400">Voice-First AI Scheduling Platform</p>
@@ -229,7 +229,7 @@ const AISchedulingPlatform: React.FC = () => {
                   <div className={`max-w-[80%] ${msg.sender === 'user' ? 'order-2' : 'order-1'}`}>
                     {msg.sender === 'assistant' && (
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-xs">
+                        <div className="w-6 h-6 bg-linear-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-xs">
                           🤖
                         </div>
                         <span className="text-xs text-slate-400">AI Assistant</span>
@@ -237,7 +237,7 @@ const AISchedulingPlatform: React.FC = () => {
                     )}
                     <div className={`rounded-2xl px-4 py-3 ${
                       msg.sender === 'user'
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-500'
+                        ? 'bg-linear-to-r from-purple-500 to-pink-500'
                         : 'bg-slate-800 border border-slate-700'
                     }`}>
                       <p className="text-sm leading-relaxed whitespace-pre-line">{msg.text}</p>
@@ -256,7 +256,7 @@ const AISchedulingPlatform: React.FC = () => {
               <div className="flex gap-2">
                 <button
                   onClick={toggleRecording}
-                  className={`p-3 rounded-xl transition-all flex-shrink-0 ${
+                  className={`p-3 rounded-xl transition-all shrink-0 ${
                     isRecording
                       ? 'bg-red-500 animate-pulse'
                       : 'bg-slate-800 hover:bg-slate-700'
@@ -275,7 +275,7 @@ const AISchedulingPlatform: React.FC = () => {
                 <button
                   onClick={handleSendMessage}
                   disabled={!userInput.trim()}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-slate-700 disabled:to-slate-700 disabled:cursor-not-allowed rounded-xl font-semibold transition-all flex-shrink-0"
+                  className="px-6 py-3 bg-linear-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-slate-700 disabled:to-slate-700 disabled:cursor-not-allowed rounded-xl font-semibold transition-all shrink-0"
                 >
                   Send
                 </button>
