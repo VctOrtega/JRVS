@@ -63,12 +63,115 @@ async def startup():
 async def health():
     return {"status": "healthy", "model": ollama_client.current_model}
 
+# Helper: Parse calendar requests from natural language
+async def try_parse_calendar_request(message: str) -> Optional[int]:
+    """Try to parse natural language calendar requests and create event"""
+    import re
+    from datetime import datetime, timedelta
+
+    msg_lower = message.lower()
+
+    # Pattern: "meeting/event/reminder tomorrow/today at X"
+    if any(word in msg_lower for word in ['meeting', 'event', 'reminder', 'appointment']):
+        time_match = re.search(r'at (\d{1,2})(?::(\d{2}))?\s*(am|pm)?', msg_lower)
+
+        if time_match:
+            hour = int(time_match.group(1))
+            minute = int(time_match.group(2)) if time_match.group(2) else 0
+            meridiem = time_match.group(3)
+
+            # Convert to 24-hour format
+            if meridiem == 'pm' and hour != 12:
+                hour += 12
+            elif meridiem == 'am' and hour == 12:
+                hour = 0
+
+            # Determine date
+            if 'tomorrow' in msg_lower:
+                event_date = datetime.now() + timedelta(days=1)
+            elif 'today' in msg_lower:
+                event_date = datetime.now()
+            elif 'next week' in msg_lower:
+                event_date = datetime.now() + timedelta(days=7)
+            else:
+                # Check for day names (monday, tuesday, etc.)
+                days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+                for i, day in enumerate(days):
+                    if day in msg_lower:
+                        # Find next occurrence of this day
+                        today = datetime.now()
+                        days_ahead = i - today.weekday()
+                        if days_ahead <= 0:  # Target day already happened this week
+                            days_ahead += 7
+                        event_date = today + timedelta(days=days_ahead)
+                        break
+                else:
+                    event_date = datetime.now()
+
+            # Set time
+            event_date = event_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
+
+            # Extract title with smart parsing
+            title = message.split('at')[0].strip()
+
+            # Remove time-related words and common phrases
+            remove_words = [
+                'i have a', 'i have an', 'i have',
+                'schedule a', 'schedule an', 'schedule',
+                'create a', 'create an', 'create',
+                'add a', 'add an', 'add',
+                'tomorrow', 'today', 'next week',
+                'this monday', 'this tuesday', 'this wednesday',
+                'this thursday', 'this friday', 'this saturday', 'this sunday',
+                'next monday', 'next tuesday', 'next wednesday',
+                'next thursday', 'next friday', 'next saturday', 'next sunday',
+                'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
+            ]
+
+            title_lower = title.lower()
+            for word in remove_words:
+                title_lower = title_lower.replace(word, '').strip()
+
+            # Capitalize first letter of each word
+            title = ' '.join(word.capitalize() for word in title_lower.split())
+
+            # Generate smart titles based on keywords
+            if not title or len(title) < 3:
+                if 'meeting' in msg_lower:
+                    # Extract who the meeting is with
+                    with_match = re.search(r'with\s+(.+?)(?:\s+at|\s+tomorrow|\s+today|$)', msg_lower)
+                    if with_match:
+                        title = f"Meeting w/ {with_match.group(1).title()}"
+                    else:
+                        title = "Team Meeting"
+                elif 'appointment' in msg_lower:
+                    title = "Appointment"
+                elif 'reminder' in msg_lower:
+                    title = "Reminder"
+                elif 'event' in msg_lower:
+                    title = "Event"
+                else:
+                    title = "Task"
+
+            # Limit title length for clean display
+            if len(title) > 30:
+                title = title[:27] + "..."
+
+            # Create event
+            event_id = await calendar.add_event(title, event_date)
+            return event_id
+
+    return None
+
 # Chat endpoint
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     session_id = request.session_id or str(uuid.uuid4())
 
     try:
+        # Try to parse calendar request first
+        event_id = await try_parse_calendar_request(request.message)
+
         # Get context from RAG
         context = await rag_retriever.retrieve_context(request.message, session_id)
 
@@ -78,6 +181,11 @@ async def chat(request: ChatRequest):
             context=context,
             stream=False
         )
+
+        # If we created an event, prepend confirmation to response
+        if event_id:
+            event_msg = f"✓ I've created that event for you (Event #{event_id}).\n\n"
+            response = event_msg + response
 
         if not response:
             raise HTTPException(status_code=500, detail="Failed to generate response")
