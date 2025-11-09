@@ -26,109 +26,6 @@ interface ConnectedCalendar {
   events: CalendarEvent[];
 }
 
-// JRVS Logo Component
-const JRVSLogo = () => {
-  return (
-    <div className="flex items-center">
-      <svg
-        width="48"
-        height="48"
-        viewBox="0 0 48 48"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Swirling light blue lines */}
-        <path
-          d="M24 4 C 20 8, 16 16, 16 24 C 16 28, 18 32, 20 36 C 22 40, 26 42, 30 44"
-          stroke="#0ea5e9"
-          strokeWidth="2.5"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          d="M24 4 C 28 8, 32 16, 32 24 C 32 28, 30 32, 28 36 C 26 40, 22 42, 18 44"
-          stroke="#0ea5e9"
-          strokeWidth="2.5"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          d="M24 44 C 20 40, 16 32, 16 24 C 16 20, 18 16, 20 12 C 22 8, 26 6, 30 4"
-          stroke="#0ea5e9"
-          strokeWidth="2.5"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path
-          d="M24 44 C 28 40, 32 32, 32 24 C 32 20, 30 16, 28 12 C 26 8, 22 6, 18 4"
-          stroke="#0ea5e9"
-          strokeWidth="2.5"
-          fill="none"
-          strokeLinecap="round"
-        />
-        
-        {/* Golden connecting lines and dots */}
-        <circle cx="16" cy="16" r="2" fill="#fbbf24" />
-        <circle cx="32" cy="16" r="2" fill="#fbbf24" />
-        <circle cx="16" cy="32" r="2" fill="#fbbf24" />
-        <circle cx="32" cy="32" r="2" fill="#fbbf24" />
-        <circle cx="12" cy="24" r="1.5" fill="#fbbf24" />
-        <circle cx="36" cy="24" r="1.5" fill="#fbbf24" />
-        <circle cx="24" cy="8" r="1.5" fill="#fbbf24" />
-        <circle cx="24" cy="40" r="1.5" fill="#fbbf24" />
-        
-        <path
-          d="M16 16 L 20 20"
-          stroke="#fbbf24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M32 16 L 28 20"
-          stroke="#fbbf24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M16 32 L 20 28"
-          stroke="#fbbf24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M32 32 L 28 28"
-          stroke="#fbbf24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        
-        {/* Central clock face */}
-        <circle cx="24" cy="24" r="6" fill="#fbbf24" stroke="#0ea5e9" strokeWidth="1" />
-        <circle cx="24" cy="24" r="1" fill="#0ea5e9" />
-        {/* Clock hands pointing to 10 and 2 */}
-        <line
-          x1="24"
-          y1="24"
-          x2="22"
-          y2="20"
-          stroke="#0ea5e9"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <line
-          x1="24"
-          y1="24"
-          x2="26"
-          y2="20"
-          stroke="#0ea5e9"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
-  );
-};
-
 // TechBackground Component
 const TechBackground = () => {
   return (
@@ -229,7 +126,7 @@ const AISchedulingPlatform = () => {
     { type: 'google' as const, name: 'Google Calendar', color: 'bg-blue-500' },
     { type: 'outlook' as const, name: 'Outlook Calendar', color: 'bg-cyan-500' },
     { type: 'apple' as const, name: 'Apple Calendar', color: 'bg-gray-500' },
-    { type: 'custom' as const, name: 'Custom Calendar', color: 'bg-sky-500' }
+    { type: 'custom' as const, name: 'Custom Calendar', color: 'bg-purple-500' }
   ];
 
   // Scroll to bottom of messages
@@ -368,16 +265,18 @@ const AISchedulingPlatform = () => {
         <header className="border-b border-slate-700/50 bg-slate-900/50 backdrop-blur-xl">
           <div className="max-w-[1800px] mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex-1"></div>
-              <div className="flex items-center gap-3 flex-1 justify-center">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-6 h-6" />
+                </div>
                 <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
-                    JRVS
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    AI Scheduler
                   </h1>
-                  <p className="text-xs text-slate-400">AI Scheduling Platform</p>
+                  <p className="text-xs text-slate-400">Voice-First AI Scheduling Platform</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 flex-1 justify-end">
+              <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm text-slate-400">
                   <Calendar className="w-4 h-4" />
                   <span>{calendars.length} Calendar{calendars.length !== 1 ? 's' : ''} Connected</span>
@@ -394,7 +293,7 @@ const AISchedulingPlatform = () => {
               {/* Chat Header */}
               <div className="p-4 border-b border-slate-700/50">
                 <div className="flex items-center gap-3">
-                  <MessageSquare className="w-5 h-5 text-sky-400" />
+                  <MessageSquare className="w-5 h-5 text-purple-400" />
                   <div>
                     <h2 className="text-lg font-semibold">AI Assistant</h2>
                     <p className="text-xs text-slate-400">Powered by Gemini AI</p>
@@ -409,7 +308,7 @@ const AISchedulingPlatform = () => {
                     <div className={`max-w-[80%] ${msg.sender === 'user' ? 'order-2' : 'order-1'}`}>
                       {msg.sender === 'assistant' && (
                         <div className="flex items-center gap-2 mb-1">
-                          <div className="w-6 h-6 bg-gradient-to-br from-sky-500 to-blue-500 rounded-full flex items-center justify-center text-xs">
+                          <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-xs">
                             🤖
                           </div>
                           <span className="text-xs text-slate-400">AI Assistant</span>
@@ -417,7 +316,7 @@ const AISchedulingPlatform = () => {
                       )}
                       <div className={`rounded-2xl px-4 py-3 ${
                         msg.sender === 'user'
-                          ? 'bg-gradient-to-r from-sky-500 to-blue-500'
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500'
                           : 'bg-slate-800 border border-slate-700'
                       }`}>
                         <p className="text-sm leading-relaxed whitespace-pre-line">{msg.text}</p>
@@ -450,12 +349,12 @@ const AISchedulingPlatform = () => {
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Type your message or use voice..."
-                    className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                    className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   <button
                     onClick={handleSendMessage}
                     disabled={!userInput.trim()}
-                    className="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-600 hover:to-blue-600 disabled:from-slate-700 disabled:to-slate-700 disabled:cursor-not-allowed rounded-xl font-semibold transition-all shrink-0"
+                    className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-slate-700 disabled:to-slate-700 disabled:cursor-not-allowed rounded-xl font-semibold transition-all shrink-0"
                   >
                     Send
                   </button>
@@ -469,12 +368,12 @@ const AISchedulingPlatform = () => {
               <div className="p-4 border-b border-slate-700/50">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-sky-400" />
+                    <Calendar className="w-5 h-5 text-purple-400" />
                     <h2 className="text-lg font-semibold">Your Calendars</h2>
                   </div>
                   <button
                     onClick={() => setShowAddCalendar(!showAddCalendar)}
-                    className="flex items-center gap-2 px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg text-sm font-medium transition-all"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm font-medium transition-all"
                   >
                     <Plus className="w-4 h-4" />
                     Add Calendar
@@ -490,7 +389,7 @@ const AISchedulingPlatform = () => {
                         <button
                           key={provider.type}
                           onClick={() => handleAddCalendar(provider.type)}
-                          className="flex items-center gap-2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 hover:border-sky-500 transition-all"
+                          className="flex items-center gap-2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 hover:border-blue-500 transition-all"
                         >
                           <div className={`w-3 h-3 rounded-full ${provider.color}`} />
                           <span className="text-sm">{provider.name}</span>
@@ -532,7 +431,7 @@ const AISchedulingPlatform = () => {
                       <p className="text-sm text-slate-400 mb-4">Add your calendars to get started</p>
                       <button
                         onClick={() => setShowAddCalendar(true)}
-                        className="px-4 py-2 bg-sky-500 hover:bg-sky-600 rounded-lg text-sm font-medium transition-all"
+                        className="px-4 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg text-sm font-medium transition-all"
                       >
                         Add Your First Calendar
                       </button>
@@ -570,9 +469,9 @@ const AISchedulingPlatform = () => {
                                   key={`${day}-${hour}`}
                                   className={`py-2 px-2 rounded border ${
                                     hasEvent
-                                      ? 'bg-sky-500/20 border-sky-500/50'
+                                      ? 'bg-purple-500/20 border-purple-500/50'
                                       : 'bg-slate-800/50 border-slate-700/30'
-                                  } hover:border-sky-500/50 transition-colors cursor-pointer`}
+                                  } hover:border-purple-500/50 transition-colors cursor-pointer`}
                                 />
                               );
                             })}
